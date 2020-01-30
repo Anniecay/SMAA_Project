@@ -1,6 +1,6 @@
 import os
 os.environ['KERAS_BACKEND']='tensorflow'
-# os.environ['THEANO_FLAGS'] = "device=gpu"  # 改变环境变量添加THEANO_FLAGS,在导入theano的时候可以设置使用gpu
+# os.environ['THEANO_FLAGS'] = "device=gpu"  
 import numpy as np
 import math
 import keras
@@ -129,8 +129,8 @@ def training():
 
     # TODO CNN 
     # model = Sequential()
-    # model.add(Conv1D(cnn_output_dim,kernel_size,padding='same',activation='relu',input_shape=(team_num,hero_id_max)))  #(none,team_num,129) 转换为 (none,team_num,32)
-    # model.add(MaxPooling1D(pool_size=pool_size,data_format='channels_first'))  #(none,team_num,32)转换为 (none,team_num,16)
+    # model.add(Conv1D(cnn_output_dim,kernel_size,padding='same',activation='relu',input_shape=(team_num,hero_id_max)))  
+    # model.add(MaxPooling1D(pool_size=pool_size,data_format='channels_first'))  
     # model.add(Reshape((int(team_num*cnn_output_dim/pool_size),), input_shape=(team_num,int(cnn_output_dim/pool_size))))
     # model.add(Dropout(0.2))
     # model.add(Dense((10),input_shape=(team_num,cnn_output_dim/pool_size)))
