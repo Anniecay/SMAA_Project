@@ -11,41 +11,34 @@ from keras.models import load_model
 import time
 import datetime
 import sys
-# from keras.utils.visualize_plots import figures   # TODO：一个手动添加的模块，用来绘制误差值随着迭代次数的曲线，并保存图像
+# from keras.utils.visualize_plots import figures   
 from matplotlib.font_manager import FontProperties
 import matplotlib.pyplot as plt
-import matplotlib.dates as mdates  # 让坐标显示月份
+import matplotlib.dates as mdates  
 import matplotlib as mpl
 
 # coding:utf-8
 
-"""根据对局数据型训练1个预测模型
-   可以对胜率进行预测
-   LSTM 两个时间节点，第一个时间节点为天辉英雄的稀疏向量，第二个时间节点为夜魇英雄的稀疏向量
-   英雄共117个，最后一个英雄为马尔斯(编号129)，"""
 
-# TODO ====参数区==== TODO
 predict_step = 1
-team_num = 2  # 多少个月的数据作为训练集
-cnn_output_dim = 64  # CNN层输出特征维度
+team_num = 2  
+cnn_output_dim = 64  
 kernel_size = 13
-pool_size = 2  # 池化倍数 TODO 注意！！ 需要保证 cnn_output_dim ÷ pool_size 的结果是一个整数
-hidden_size = 256  # 神经元数目
-epochs = 2000  # 训练轮次
-batch_size = 300  # 批处理大小
-model_saved_path = "../model/keras/"  # 模型保存路径
+pool_size = 2 
+hidden_size = 256  
+epochs = 2000  
+batch_size = 300  
+model_saved_path = "../model/keras/"  
 # model_name = '50000_samples_20191029_LSTM'
 # model_name = '100000_samples_20191030_CNN+LSTM_kernel_13_batch_1000'
 model_name = '100000_samples_20191031_LSTM'
-hero_id_max = 130  # 英雄id的最大值
-# TODO ====参数区==== TODO
+hero_id_max = 130  
 
 
 
-mpl.rcParams['font.sans-serif'] = ['SimHei']  # 用来正常显示中文标签
-mpl.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
+mpl.rcParams['font.sans-serif'] = ['SimHei']  
+mpl.rcParams['axes.unicode_minus'] = False  
 
-# ===================TODO 读取对局数据   TODO========================
 with open('/Users/502944285qq.com/PycharmProjects/SMAA/venv/bin/result.csv', 'r', encoding='utf-8') as fo_1:
     line_matches = fo_1.readlines()
     sample_in = []
@@ -103,7 +96,7 @@ def training():
     test_y = np.array(test_y).reshape(len(test_y), 1)
     validate_x = np.array(validate_x).reshape(len(validate_x), team_num, hero_id_max)
     validate_y = np.array(validate_y).reshape(len(validate_y), 1)
-    # TODO ==============样本制作 结束==================
+    # TODO
     print('=========== tx.shape:', tx.shape, ' ===============')
     print('=========== ty.shape:', ty.shape, ' ===============')
     print('=========== test_x.shape:', test_x.shape, ' ===============')
@@ -111,7 +104,7 @@ def training():
     print('=========== validate_x.shape:', validate_x.shape, ' ===============')
     print('=========== validate_y.shape:', validate_y.shape, ' ===============')
 
-    # TODO CNN + LSTM 模型  ---使用该模型时需注释掉另外两个模型
+    #  CNN + LSTM 
     # model = Sequential()
     # model.add(Conv1D(cnn_output_dim,kernel_size,padding='same',input_shape=(team_num,hero_id_max)))  #(none,team_num,9) 转换为 (none,team_num,32)
     # model.add(MaxPooling1D(pool_size=pool_size,data_format='channels_first'))  #(none,team_num,32)转换为 (none,team_num,16)
@@ -119,22 +112,22 @@ def training():
     # model.add(Dropout(0.2))
     # model.add(Dense(10))
     # model.add(Dropout(0.2))
-    # model.add(Dense(1))              # 全连接到一个元素
+    # model.add(Dense(1))              
     # model.add(Activation('sigmoid'))
     # model.compile(loss='mse',optimizer='adam',metrics=['accuracy'])
 
-    # TODO 纯LSTM 模型  ---使用该模型时需注释掉另外两个模型
+    # TODO LSTM 
     model = Sequential()
     model.add(LSTM(hidden_size, input_shape=(team_num, hero_id_max),
-                   return_sequences=False))  # 输入(none,team_num,129)  输出向量 (hidden_size,)
+                   return_sequences=False))  
     model.add(Dropout(0.2))
     model.add(Dense(10))
     model.add(Dropout(0.2))
-    model.add(Dense(1))  # 全连接到一个元素
+    model.add(Dense(1))  
     model.add(Activation('sigmoid'))
     model.compile(loss='mse', optimizer='adam', metrics=['accuracy'])
 
-    # TODO 纯CNN 模型  ---使用该模型时需注释掉另外两个模型
+    # TODO CNN 
     # model = Sequential()
     # model.add(Conv1D(cnn_output_dim,kernel_size,padding='same',activation='relu',input_shape=(team_num,hero_id_max)))  #(none,team_num,129) 转换为 (none,team_num,32)
     # model.add(MaxPooling1D(pool_size=pool_size,data_format='channels_first'))  #(none,team_num,32)转换为 (none,team_num,16)
@@ -142,7 +135,7 @@ def training():
     # model.add(Dropout(0.2))
     # model.add(Dense((10),input_shape=(team_num,cnn_output_dim/pool_size)))
     # model.add(Dropout(0.2))
-    # model.add(Dense(1))              # 全连接到一个元素
+    # model.add(Dense(1))              
     # model.add(Activation('sigmoid'))
     # model.compile(loss='mse',optimizer='adam',metrics=['accuracy'])
 
@@ -170,15 +163,14 @@ def testing(tag_line):
     # validate_x = validate_x[5000:]
     # validate_y = validate_y[5000:]
 
-    # TODO ==============样本制作 结束==================
+    # TODO 
     print('=========== tx.shape:', tx.shape, ' ===============')
     print('=========== ty.shape:', ty.shape, ' ===============')
     print('=========== test_x.shape:', test_x.shape, ' ===============')
     print('=========== test_y.shape:', test_y.shape, ' ===============')
     print('=========== validate_x.shape:', validate_x.shape, ' ===============')
     print('=========== validate_y.shape:', validate_y.shape, ' ===============')
-    # TODO 开始加载模型
-    keras.backend.clear_session()  # 计算图清空，防止越来越慢
+    keras.backend.clear_session()  
     model = load_model(model_saved_path + model_name + '.h5')
     out0 = model.predict(test_x)
     correct_num = 0
