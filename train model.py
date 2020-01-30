@@ -29,9 +29,9 @@ hidden_size = 256
 epochs = 2000  
 batch_size = 300  
 model_saved_path = "../model/keras/"  
-# model_name = '50000_samples_20191029_LSTM'
-# model_name = '100000_samples_20191030_CNN+LSTM_kernel_13_batch_1000'
-model_name = '100000_samples_20191031_LSTM'
+# model_name = '50000_samples_20191029_CNN'
+# model_name = '100000_samples_20191030_CNN+LSTM'
+model_name = '20200120_LSTM'
 hero_id_max = 130  
 
 
