@@ -104,18 +104,7 @@ def training():
     print('=========== validate_x.shape:', validate_x.shape, ' ===============')
     print('=========== validate_y.shape:', validate_y.shape, ' ===============')
 
-    #  CNN + LSTM 
-    # model = Sequential()
-    # model.add(Conv1D(cnn_output_dim,kernel_size,padding='same',input_shape=(team_num,hero_id_max)))  #(none,team_num,9) 转换为 (none,team_num,32)
-    # model.add(MaxPooling1D(pool_size=pool_size,data_format='channels_first'))  #(none,team_num,32)转换为 (none,team_num,16)
-    # model.add(LSTM(hidden_size, input_shape=(team_num,(cnn_output_dim/pool_size)), return_sequences=False))  # 输入(none,team_num,129)  输出向量 (hidden_size,)
-    # model.add(Dropout(0.2))
-    # model.add(Dense(10))
-    # model.add(Dropout(0.2))
-    # model.add(Dense(1))              
-    # model.add(Activation('sigmoid'))
-    # model.compile(loss='mse',optimizer='adam',metrics=['accuracy'])
-
+   
     # TODO LSTM 
     model = Sequential()
     model.add(LSTM(hidden_size, input_shape=(team_num, hero_id_max),
